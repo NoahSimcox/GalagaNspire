@@ -1,5 +1,4 @@
 #include <os.h>
-#include <SDL/SDL_config.h>
 #include <SDL/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,9 +7,8 @@
 #include "libndls.h"
 #include "Main.h"
 #include <SDL/SDL_video.h>
-#include <SDL/SDL_image.h>
 
-SDL_Surface *screen;
+SDL_Surface* screen;
 SDL_Event event;
 int numStars;
 Uint32 map;
@@ -21,6 +19,7 @@ int main(void){
 
     update(starList);
 
+    free(starList);
 
 	SDL_Quit();
 	return 0;
@@ -34,8 +33,9 @@ Star* setup(){
 
     Star* stars = drawStars();
 
-    SDL_Surface* galagaTexture = galagaTextureLoad("/home/noah/Galaga/Galaga.png.png");
-    drawGalagaText(galagaTexture, 40, 40);
+    SDL_Delay(3000);
+
+    drawGalagaText(nSDL_LoadImage(image_link), 18, 33);
     
     SDL_UpdateRect(screen, 0, 0, 0, 0);
     SDL_Delay(3000);
@@ -89,24 +89,35 @@ void update(Star* starList){
     }
 }
 
-SDL_Surface* galagaTextureLoad(char *filename) {
 
-	SDL_Surface* texture;
+void drawGalagaText(SDL_Surface* sprite, int x, int y) {
 
-	texture = IMG_Load(filename);
+    drawTile(sprite, x, y);
 
-	return texture;
+
+    // int numPositions;
+    // Position* positions = galagaText(&numPositions);
+
+    // for (int i = 0; i < numPositions; i++){
+
+    //     int posX = positions[i].x;
+    //     int posY = positions[i].y;
+
+    //     SDL_Rect dest = {posX, posY, 1, 1};
     
+	//     SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 255, 255, 255));
+    // }
+	
 }
 
-void drawGalagaText(SDL_Surface* texture, int x, int y) {
+void drawTile(SDL_Surface *tileset, int x, int y) {
 
-	SDL_Rect dest;
-
-	dest.x = x;
-	dest.y = y;
-
-    texture->format->alpha = 0;
-    
-	SDL_FillRect(texture, &dest, SDL_MapRGB(texture->format, 0, 0, 0));
+    SDL_Rect src_rect, screen_pos;
+    src_rect.x = 0;
+    src_rect.y = 0;
+    src_rect.w = TILE_WIDTH;
+    src_rect.h = TILE_HEIGHT;
+    screen_pos.x = x * TILE_WIDTH;
+    screen_pos.y = y * TILE_HEIGHT;
+    SDL_BlitSurface(tileset, &src_rect, screen, &screen_pos);
 }

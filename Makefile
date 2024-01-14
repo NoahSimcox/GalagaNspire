@@ -7,7 +7,6 @@ LD  = nspire-ld
 GENZEHN = genzehn
 
 GCCFLAGS = -Wall -W -marm
-GCCFLAGS += -D__USE_LOCALE -D__USE_CTYPE_INLINES
 LDFLAGS = -lSDL_image -lc
 ZEHNFLAGS = --name "Galaga"
 
