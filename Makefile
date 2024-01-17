@@ -7,7 +7,7 @@ LD  = nspire-ld
 GENZEHN = genzehn
 
 GCCFLAGS = -Wall -W -marm
-LDFLAGS = -lSDL_image -lc
+LDFLAGS = 
 ZEHNFLAGS = --name "Galaga"
 
 ifeq ($(DEBUG),FALSE)
@@ -27,17 +27,17 @@ vpath %.elf $(DISTDIR)
 all: $(EXE).tns
 
 %.o: %.c
-	$(GCC) $(GCCFLAGS) -c $< -o $@
+	$(GCC) $(GCCFLAGS) -c $<
 
 %.o: %.cpp
-	$(GXX) $(GCCFLAGS) -c $< -o $@
+	$(GXX) $(GCCFLAGS) -c $<
 	
 %.o: %.S
-	$(AS) -c $< -o $@
+	$(AS) -c $<
 
 $(EXE).elf: $(OBJS)
 	mkdir -p $(DISTDIR)
-	$(LD) $^ -o $@ $(LDFLAGS) -lc
+	$(LD) $^ -o $(DISTDIR)/$@ $(LDFLAGS)
 
 $(EXE).tns: $(EXE).elf
 	$(GENZEHN) --input $^ --output $@.zehn $(ZEHNFLAGS)
